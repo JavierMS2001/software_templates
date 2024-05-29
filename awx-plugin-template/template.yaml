@@ -1,0 +1,37 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: awx-plugin-template
+  title: AWX Plugin Template
+  description: Template for creating a new plugin that integrates with AWX
+spec:
+  owner: user:JavierMS2001
+  type: service
+  parameters:
+    - title: Choose plugin ID
+      required:
+        - pluginId
+      properties:
+        pluginId:
+          title: Plugin ID
+          type: string
+          description: The ID to be given to the new plugin.
+  steps:
+    - id: fetchTemplate
+      name: Fetch Template
+      action: fetch:template
+      input:
+        url: ./skeleton/
+        targetPath: ./plugins/${{ parameters.pluginId }}/
+
+        values:
+          pluginId: ${{ parameters.pluginId }}
+
+  output:
+    links:
+      - title: View Plugin Directory
+        icon: folder
+        url: 'file://plugins/${{ parameters.pluginId }}'
+      - title: Documentation
+        icon: docs
+        url: 'http://192.168.10.48/plugins/${{ parameters.pluginId }}'

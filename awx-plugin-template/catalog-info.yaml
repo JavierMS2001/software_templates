@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Test
+  description: This is a test service
+  tags:
+    - test
+    - service
+  annotations:
+    backstage.io/techdocs-ref: url:https://github.com/JavierMS2001/software_templates
+spec:
+  type: service
+  owner: user:JavierMS2001
+  lifecycle: production
+  providesApis:
+    - my-service-api
+  consumesApis:
+    - some-other-api
+  dependsOn:
+    - resource:my-database
+

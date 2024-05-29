@@ -1,0 +1,39 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: awx-plugin-template
+  title: AWX Plugin Template
+  description: Template for creating a new Backstage plugin that integrates with AWX testing
+spec:
+  owner: user:guest
+  type: service
+  parameters:
+    - title: Plugin ID
+      required:
+        - pluginId
+      properties:
+        pluginId:
+          title: Plugin ID
+          type: string
+          default: awx
+          description: Unique ID for the new plugin
+  steps:
+    - id: fetch
+      name: Fetch Template
+      action: fetch:template
+      input:
+        url: ./ # This points to the current directory containing the template
+    - id: rename
+      name: Rename Plugin
+      action: rename:all
+      input:
+        path: './'
+        parameters:
+          - from: 'awx'
+            to: '${{ parameters.pluginId }}'
+  output:
+    links:
+      - title: Open in GitHub
+        icon: github
+        url: 'https://github.com/your-org/${{ parameters.pluginId }}'
+
