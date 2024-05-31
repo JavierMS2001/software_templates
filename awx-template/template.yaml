@@ -1,0 +1,50 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: plugin-scaffolder-template
+  title: Plugin Scaffolder Template
+  description: Scaffolds a new Backstage plugin and sets it up.
+spec:
+  owner: User:JavierMS2001
+  type: service
+
+  parameters:
+    - title: Plugin Information
+      required:
+        - pluginId
+      properties:
+        pluginId:
+          title: Plugin Id
+          type: string
+          description: Id of the new plugin
+
+  steps:
+    - id: fetch-plugin
+      name: Fetch Plugin Template
+      action: fetch:plain
+      input:
+        url: './skeleton'
+        targetPath: './plugin-template'
+        values:
+          pluginId: '{{ parameters.pluginId }}'
+
+    - id: move-plugin
+      name: Move Plugin Template
+      action: acme:directory:move
+      input:
+        source: './plugin-template'
+        destination: './plugins/{{ parameters.pluginId }}'
+
+    - id: install-dependencies
+      name: Install Dependencies
+      action: acme:command:execute
+      input:
+        command: 'yarn'
+        args: ['install']
+        workingDirectory: './plugins/{{ parameters.pluginId }}'
+
+  output:
+    links:
+      - title: test
+        icon: catalog
+        url: 'http://192.168.10.48:3000/{{ parameters.pluginId }}'
